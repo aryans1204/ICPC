@@ -1,0 +1,3 @@
+[submodule "ICPC"]
+	path = ICPC
+	url = https://github.com/aryans1204/ICPC.git
