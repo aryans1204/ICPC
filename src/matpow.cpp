@@ -10,8 +10,17 @@ struct matrix {
       for (int j = 0; j < 2; j++) {
         c.mat[i][j] = 0;
         for (int k = 0; k < 2; k++) {
-          c.mat[i][k] += a.mat[i][k] * b.mat[k][j];
+          c.mat[i][j] += a.mat[i][k] * b.mat[k][j];
         }
+      }
+    }
+    return c;
+  }
+  matrix friend operator %(const matrix& a, long long MOD) {
+    matrix c = a;
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        c.mat[i][j] = c.mat[i][j] % MOD;
       }
     }
     return c;
@@ -19,29 +28,35 @@ struct matrix {
 
 };
 
-
-matrix matpow(const matrix& a, long long n) {
+matrix matpow(matrix a, long long n, long long m) {
+  a = a%m;
   matrix ans = {{
     {1, 0},
     {0, 1}
   }};
-
   while (n) {
     if (n & 1) {
-      ans = ans*a;
+      ans = ans*a%m;
     }
-    a = a*a;
+    a = a*a%m;
     n >>= 1;
   }
   return ans;
 }
 
-long long fib(int n) {
+long long fib(long long n, long long MOD) {
   matrix ans = {{
     {1, 1},
     {1, 0}
   }};
 
-  matrix ans = matpow(ans, n);
-  return ans.mat[0][1];
+  return matpow(ans, n, MOD).mat[0][1];
+}
+
+int main()
+{
+  long long n;
+  long long MOD = 1e9+7;
+  cin >> n;
+  cout << fib(n, MOD) << endl;
 }
